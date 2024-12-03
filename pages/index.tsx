@@ -1,115 +1,173 @@
-import Image from "next/image";
-import localFont from "next/font/local";
+import React, { useState } from "react";
+import "tailwindcss/tailwind.css";
+import { motion } from "framer-motion";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+const IndexPage: React.FC = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
-export default function Home() {
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+  const toggleTheme = () => setIsDarkMode(!isDarkMode);
+
   return (
-    <div
-      className={`${geistSans.variable} ${geistMono.variable} grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]`}
-    >
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              pages/index.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className={`${isDarkMode ? "dark" : ""}`}>
+      <div className="flex h-screen bg-gradient-to-r from-indigo-900 via-purple-800 to-black dark:bg-gray-900">
+        {/* Sidebar */}
+        <motion.div
+          initial={{ x: -300 }}
+          animate={{ x: sidebarOpen ? 0 : -300 }}
+          transition={{ duration: 0.3 }}
+          className="fixed top-0 left-0 h-full bg-gradient-to-b from-gray-800 to-gray-900 dark:from-gray-700 dark:to-gray-800 backdrop-blur-lg text-white shadow-lg w-64 z-20"
+        >
+          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-700">
+            <h2 className="text-2xl font-bold">ProjectPulse</h2>
+            <button
+              onClick={toggleSidebar}
+              className="text-gray-400 hover:text-white focus:outline-none"
+            >
+              &times;
+            </button>
+          </div>
+          <nav className="mt-6">
+            <ul className="space-y-4 px-6">
+              {["About", "Projects", "Services", "Contact"].map((section) => (
+                <li key={section}>
+                  <a
+                    href={`#${section.toLowerCase()}`}
+                    className="block text-gray-300 hover:text-white hover:font-semibold transition"
+                  >
+                    {section}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </motion.div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+        {/* Main Content */}
+        <div className="flex flex-col flex-grow overflow-y-scroll">
+          <header className="bg-gray-900 dark:bg-gray-800 bg-opacity-80 backdrop-blur-md text-white shadow-md px-6 py-4 flex items-center justify-between sticky top-0 z-10">
+            <h1 className="text-3xl font-bold">Welcome to ProjectPulse</h1>
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={toggleSidebar}
+                className="text-gray-400 hover:text-white focus:outline-none sm:hidden"
+              >
+                ☰
+              </button>
+              <button
+                onClick={toggleTheme}
+                className="text-gray-400 hover:text-white focus:outline-none"
+              >
+                {isDarkMode ? "☀️" : "🌙"}
+              </button>
+            </div>
+          </header>
+
+          {/* Hero Section */}
+          <section className="flex items-center justify-center h-[50vh] bg-gradient-to-b from-purple-800 to-black dark:from-gray-700 dark:to-gray-900 text-white relative">
+            <div className="relative z-10 text-center space-y-4">
+              <h2 className="text-5xl font-extrabold animate-pulse">
+                Empowering Ideas
+              </h2>
+              <p className="text-lg font-light">
+                Your projects, our insights, and endless possibilities.
+              </p>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-purple-700 dark:to-indigo-700 hover:bg-gradient-to-l transition-all duration-300 rounded-lg text-lg"
+              >
+                Explore Now
+              </motion.button>
+            </div>
+          </section>
+
+          {/* About Section */}
+          <section id="about" className="px-8 py-16 bg-gray-100 dark:bg-gray-800 dark:text-white">
+            <h2 className="text-4xl font-bold text-center mb-8">About Us</h2>
+            <p className="text-center text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+              ProjectPulse is your ultimate platform for showcasing groundbreaking
+              projects, sharing insights, and connecting with a global audience.
+              Dive into a world of creativity and innovation with us.
+            </p>
+          </section>
+
+          {/* Projects Section */}
+          <section id="projects" className="px-8 py-16 bg-white dark:bg-gray-900 dark:text-white">
+            <h2 className="text-4xl font-bold text-center mb-8">Our Projects</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[1, 2, 3].map((project) => (
+                <motion.div
+                  key={project}
+                  whileHover={{ scale: 1.05 }}
+                  className="bg-gray-200 dark:bg-gray-800 dark:text-gray-300 p-6 rounded-md shadow hover:shadow-lg transition-all duration-300"
+                >
+                  <h3 className="text-xl font-bold mb-2">Project {project}</h3>
+                  <p>
+                    Explore how our projects are transforming ideas into reality.
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+
+          {/* Services Section */}
+          <section id="services" className="px-8 py-16 bg-gray-100 dark:bg-gray-800 dark:text-white">
+            <h2 className="text-4xl font-bold text-center mb-8">Our Services</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {["Consulting", "Development", "Promotion"].map((service) => (
+                <motion.div
+                  key={service}
+                  whileHover={{ scale: 1.05 }}
+                  className="bg-gray-200 dark:bg-gray-700 p-6 rounded-md shadow hover:shadow-lg transition-all duration-300"
+                >
+                  <h3 className="text-xl font-bold mb-2">{service}</h3>
+                  <p>
+                    Our team specializes in {service.toLowerCase()} to help your
+                    projects shine.
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+
+          {/* Contact Section */}
+          <section id="contact" className="px-8 py-16 bg-white dark:bg-gray-900 dark:text-white">
+            <h2 className="text-4xl font-bold text-center mb-8">Contact Us</h2>
+            <form className="max-w-3xl mx-auto space-y-4">
+              <input
+                type="text"
+                placeholder="Your Name"
+                className="w-full px-4 py-2 border rounded-md text-black focus:outline-none focus:ring-2 focus:ring-indigo-600"
+              />
+              <input
+                type="email"
+                placeholder="Your Email"
+                className="w-full px-4 py-2 border text-black rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600"
+              />
+              <textarea
+                placeholder="Your Message"
+                rows={4}
+                className="w-full px-4 py-2 border text-black rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600"
+              ></textarea>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                className="w-full px-4 py-2 bg-indigo-600 hover:bg-indigo-800 text-white font-bold rounded-md"
+              >
+                Send Message
+              </motion.button>
+            </form>
+          </section>
+
+          {/* Footer */}
+          <footer className="bg-gray-900 dark:bg-gray-800 text-white text-center py-4">
+            <p>&copy; {new Date().getFullYear()} ProjectPulse. All rights reserved.</p>
+          </footer>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
     </div>
   );
-}
+};
+
+export default IndexPage;
