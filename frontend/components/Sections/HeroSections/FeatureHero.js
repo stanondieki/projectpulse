@@ -53,7 +53,7 @@ const FeatureHero = () => {
             <div className="aspect-square rounded-2xl bg-gradient-to-r from-purple-600 to-blue-600 p-1">
               <div className="w-full h-full bg-white rounded-xl overflow-hidden">
                 <img
-                  src="/images/features.jpg"
+                  src="/images/feature1.jpg"
                   alt="Feature Preview"
                   className="w-full h-full object-cover"
                 />

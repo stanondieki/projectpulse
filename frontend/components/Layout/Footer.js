@@ -26,7 +26,7 @@ const Footer = () => {
             <h4 className="font-semibold mb-4">Contact</h4>
             <ul className="space-y-2 text-gray-600">
               <li>contact@projectpulse.com</li>
-              <li>+1 (555) 123-4567</li>
+              <li>+254 727 230 675</li>
               <li>123 Innovation Street</li>
             </ul>
           </div>

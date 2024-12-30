@@ -4,22 +4,22 @@ import { Star } from 'lucide-react';
 const TestimonialsHero = () => {
   const testimonials = [
     {
-      name: "Sarah Johnson",
+      name: "Stanley Ondieki",
       role: "CEO at TechCorp",
       content: "ProjectPulse transformed our business operations completely. The results were beyond our expectations.",
-      image: "/api/placeholder/100/100",
+      image: "/images/stan.jpg",
     },
     {
-      name: "Michael Chen",
+      name: "Desterian Omwaga",
       role: "CTO at InnovateLabs",
       content: "The team's expertise and dedication to our project was exceptional. Highly recommended!",
-      image: "/api/placeholder/100/100",
+      image: "/images/pass.png",
     },
     {
-      name: "Emma Davis",
-      role: "Product Manager",
+      name: "Donald Nyandika",
+      role: "Senior Developer AWS",
       content: "Outstanding service and support. They truly understand modern business needs.",
-      image: "/api/placeholder/100/100",
+      image: "/images/Don.jpg",
     },
   ];
 
