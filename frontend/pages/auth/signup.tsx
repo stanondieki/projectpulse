@@ -1,95 +1,113 @@
-// frontend/pages/auth/signup.tsx
-import React, { useState } from "react";
-import { useRouter } from "next/router";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
-const SignUp: React.FC = () => {
-  const router = useRouter();
+export default function SignUpForm() {
   const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
+    email: '',
+    username: '',
+    password: '',
   });
-  const [error, setError] = useState<string | null>(null);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  const [error, setError] = useState('');
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-
     try {
-      const res = await fetch("http://127.0.0.1:8000/auth/signup/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('http://localhost:8000/api/auth/register/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(formData),
       });
 
-      const data = await res.json();
+      if (!res.ok) throw new Error('Registration failed');
 
-      if (res.ok) {
-        alert("Sign up successful");
-        router.push("/auth/signin"); // Redirect to sign-in page
-      } else {
-        setError(data.error || "Failed to sign up.");
-      }
-    } catch (err) {
-      setError("An unexpected error occurred.");
+      // Automatically sign in after successful registration
+      const loginRes = await fetch('http://localhost:8000/api/auth/token/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      if (!loginRes.ok) throw new Error('Auto login failed');
+
+      const data = await loginRes.json();
+      localStorage.setItem('token', data.access);
+      localStorage.setItem('refreshToken', data.refresh);
+      router.push('/dashboard');
+    } catch (err: any) {
+      setError(err.message);
     }
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-6 rounded shadow-md w-96"
-      >
-        <h1 className="text-2xl font-bold mb-4">Sign Up</h1>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
-        <div className="mb-4">
-          <label className="block mb-1 text-gray-600">Username</label>
-          <input
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-            required
-          />
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow">
+        <h2 className="text-3xl font-bold text-center">Sign Up</h2>
+        {error && <p className="text-red-500 text-center">{error}</p>}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              className="mt-1 block w-full rounded-md border border-gray-300 p-2"
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+              Username
+            </label>
+            <input
+              type="text"
+              id="username"
+              value={formData.username}
+              onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+              className="mt-1 block w-full rounded-md border border-gray-300 p-2"
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              value={formData.password}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              className="mt-1 block w-full rounded-md border border-gray-300 p-2"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          >
+            Sign Up
+          </button>
+        </form>
+        <div className="text-center mt-4">
+          <p className="text-sm text-gray-600">
+            Already have an account?{' '}
+            <Link href="/auth/signin" className="text-blue-600 hover:text-blue-800 font-medium">
+              Sign in here
+            </Link>
+          </p>
         </div>
-        <div className="mb-4">
-          <label className="block mb-1 text-gray-600">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block mb-1 text-gray-600">Password</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-            required
-          />
-        </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded"
-        >
-          Sign Up
-        </button>
-      </form>
+      </div>
     </div>
   );
-};
-
-export default SignUp;
+}

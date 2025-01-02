@@ -21,6 +21,12 @@ const TestimonialsHero = () => {
       content: "Outstanding service and support. They truly understand modern business needs.",
       image: "/images/Don.jpg",
     },
+    {
+      name: "Eugene Ondima",
+      role: "Director MedTech",
+      content: "Imagine transforming an idea to a working solution. Logically the force behind the projectpulse is profound.",
+      image: "/images/Eugo.jpg",
+    },
   ];
 
   return (

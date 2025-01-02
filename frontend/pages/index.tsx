@@ -1,42 +1,29 @@
-import React, { useState } from "react";
-import Sidebar from "../components/Layout/Sidebar";
-import Header from "../components/Layout/Header";
-import MainHero from "../components/Sections/HeroSections/MainHero";
-import FeatureHero from "../components/Sections/HeroSections/FeatureHero";
-import TestimonialsHero from "../components/Sections/HeroSections/TestimonialsHero";
-import CTASection from "../components/Sections/CTASection";
-import Projects from "../components/Sections/Projects";
-import Contact from "../components/Sections/Contact";
-import Footer from "../components/Layout/Footer";
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { Loader2 } from 'lucide-react';
 
-const IndexPage = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+const HomePage = () => {
+  const router = useRouter();
 
-  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
-  const toggleTheme = () => setIsDarkMode(!isDarkMode);
+  useEffect(() => {
+    router.push('/auth/signin');
+  }, [router]);
 
   return (
-    <div className={`flex h-screen ${isDarkMode ? 'dark' : ''}`}>
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <div className="flex flex-col flex-grow overflow-y-auto">
-        <Header
-          onSidebarToggle={toggleSidebar}
-          isDarkMode={isDarkMode}
-          onThemeToggle={toggleTheme}
-        />
-        <main>
-          <MainHero />
-          <FeatureHero />
-          <Projects />
-          <TestimonialsHero />
-          <CTASection />
-          <Contact />
-        </main>
-        <Footer />
+    <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+      <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full mx-4">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="h-12 w-12 text-blue-500 animate-spin" />
+          <h1 className="text-2xl font-bold text-gray-800">
+            Redirecting to Login
+          </h1>
+          <p className="text-gray-600 text-center">
+            Please wait while we redirect you to the login page...
+          </p>
+        </div>
       </div>
     </div>
   );
 };
 
-export default IndexPage;
+export default HomePage;

@@ -10,11 +10,11 @@ const MainHero = () => {
             Innovate with Confidence
           </span> */}
           
-          <h2 className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-700 to-purple-500">
+          <div className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-700 to-purple-500">
             Transform Your Vision
             <br />
             Into Reality
-          </h2>
+          </div>
           
           <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
             Experience the future of digital innovation with our cutting-edge solutions

@@ -38,9 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'authentication',  # Custom authentication app
-    'corsheaders',  # For handling CORS
-    'rest_framework',  # Django REST Framework
+    'corsheaders',
+    'rest_framework',
+    'authentication.apps.AuthenticationConfig',  # Keep only this one
 ]
 
 MIDDLEWARE = [
@@ -103,16 +103,16 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Use a custom user model
-AUTH_USER_MODEL = 'authentication.CustomUser'
+AUTH_USER_MODEL = 'authentication.User'
 
 # REST Framework settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    ),
 }
 
 # JWT Authentication settings
